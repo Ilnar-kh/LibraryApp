@@ -7,7 +7,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class UserService {
-    UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public User createUser(User user) throws SQLException, IOException {
         try {

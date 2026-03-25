@@ -1,6 +1,8 @@
 import db.DatabaseConnection;
 import model.User;
 import org.flywaydb.core.Flyway;
+import repository.UserRepository;
+import repository.UserRepositoryJdbc;
 import service.UserService;
 
 import java.io.IOException;
@@ -12,7 +14,9 @@ import java.util.Properties;
 public class Main {
     public static void main(String[] args) throws SQLException, IOException {
         ConsoleUI consoleUI = new ConsoleUI();
-        UserService userService = new UserService();
+
+        UserRepository userRepository = new UserRepositoryJdbc();
+        UserService userService = new UserService(userRepository);
 
         try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("db.properties")) {
             if (inputStream != null) {
