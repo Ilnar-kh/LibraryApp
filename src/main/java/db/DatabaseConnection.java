@@ -1,5 +1,6 @@
 package db;
 
+import com.zaxxer.hikari.HikariConfig;
 import org.flywaydb.core.Flyway;
 
 import java.io.IOException;
@@ -12,6 +13,8 @@ import java.util.Properties;
 public class DatabaseConnection {
     public static Connection getConnection() throws IOException, SQLException {
         Properties properties = new Properties();
+
+        HikariConfig config = new HikariConfig();
 
         try (InputStream inputStream = DatabaseConnection.class.getClassLoader().getResourceAsStream("db.properties")) {
             if (inputStream == null) {
