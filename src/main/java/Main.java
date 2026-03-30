@@ -18,6 +18,7 @@ public class Main {
         UserRepository userRepository = new UserRepositoryJdbc();
         UserService userService = new UserService(userRepository);
 
+
         try (InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("db.properties")) {
             if (inputStream != null) {
                 Properties properties = new Properties();

@@ -1,18 +1,20 @@
 package repository;
 
+import db.DataBase;
 import db.DatabaseConnection;
 import model.User;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.Objects;
 import java.util.Optional;
 
 public class UserRepositoryJdbc implements UserRepository {
 
-    public Optional<User> findByEmail(String email) throws SQLException, IOException {
+    public Optional<User> findByEmail(String email) throws SQLException {
         String sql = "SELECT id, name, email FROM users WHERE email = ?";
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DataBase.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ) {
             preparedStatement.setString(1, email);
@@ -32,10 +34,10 @@ public class UserRepositoryJdbc implements UserRepository {
 
     public User save(User user) throws SQLException, IOException {
         String sql = "INSERT INTO users (name, email) VALUES (?, ?)";
-        String name = user.getName();
-        String email = user.getEmail();
+        String name = Objects.requireNonNull(user.getName(), "Имя пользователя не может быть null");
+        String email = Objects.requireNonNull(user.getEmail(), "Email пользователя не может быть null");
 
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = DataBase.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.setString(1, name);
